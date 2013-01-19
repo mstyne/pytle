@@ -54,7 +54,7 @@ class TLEParameters(object):
         elif len(split_string)==2:
             new_number = str(split_string[0]) + 'e-' + str(int(split_string[1])+1)
         elif len(split_string)==1:
-            new_number = '0.' + str(split_string[0])
+            new_number = '0.' + str(split_string[0]).replace(' ','')
         else:
             raise TypeError('Input is not in the TLE float format')
 
@@ -116,7 +116,7 @@ class TLEParameters(object):
 
         """
         if self.line1:
-            return self.parse_tle_number(self.line1[53:61])
+            return self.parse_tle_number(self.line1[54:61])
         else:
             return None
 
