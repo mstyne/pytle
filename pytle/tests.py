@@ -62,8 +62,14 @@ class TLEParametersTest(unittest.TestCase):
     def test_rev_at_epoch(self):
         self.assertEquals(56353,self.tle_parameters.rev_at_epoch)
 
+    def test_line1_checksum(self):
+        self.assertEquals(True,self.tle_parameters.line1_checksum)
+
+    def test_line2_checksum(self):
+        self.assertEquals(True,self.tle_parameters.line2_checksum)
+
     def test_json(self):
-        expected = '{"international_designator": "98067A", "mean_motion_ddot": 0.0, "mean_motion": 15.72125391, "ra_of_asc_node": 247.4627, "name": "ISS (ZARYA)", "classification": "U", "rev_at_epoch": 56353, "bstar": -0.11606, "satellite_number": 25544, "element_number": 292, "epoch_day": 264.51782528, "arg_of_perigee": 130.536, "mean_anomaly": 325.0288, "mean_motion_dot": -4.364e-05, "eccentricity": 0.0006703, "epoch_year": 2008, "inclination": 51.6416}'
+        expected = '{"international_designator": "98067A", "mean_motion_ddot": 0.0, "mean_motion": 15.72125391, "ra_of_asc_node": 247.4627, "name": "ISS (ZARYA)", "classification": "U", "rev_at_epoch": 56353, "line2_checksum": true, "line1_checksum": true, "bstar": -0.11606, "satellite_number": 25544, "element_number": 292, "epoch_day": 264.51782528, "arg_of_perigee": 130.536, "mean_anomaly": 325.0288, "mean_motion_dot": -4.364e-05, "eccentricity": 0.0006703, "epoch_year": 2008, "inclination": 51.6416}'
 
         self.assertEquals(expected,self.tle_parameters.json)
 

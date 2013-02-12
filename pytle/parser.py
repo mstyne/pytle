@@ -1,4 +1,5 @@
 import json
+import re
 
 def parse(filename=None,tle_string=None):
     if filename:
@@ -59,6 +60,24 @@ class TLEParameters(object):
             raise TypeError('Input is not in the TLE float format')
 
         return float(new_number)
+    
+    def calc_checksum(self,tle_number_string):
+        matches  = re.findall('(\d|-)', tle_number_string)
+        checksum = int(matches.pop())
+        total = 0
+        
+        for match in matches:
+            if match == '-':
+                 match = 1
+            total = total + int(match)
+				
+        modtotal = total % 10
+				
+        if modtotal == checksum:
+            return True 
+        else:
+            return False
+
 
     @property
     def name(self):
@@ -116,7 +135,7 @@ class TLEParameters(object):
 
         """
         if self.line1:
-            return self.parse_tle_number(self.line1[54:61])
+            return self.parse_tle_number(self.line1[53:61])
         else:
             return None
 
@@ -238,6 +257,20 @@ class TLEParameters(object):
             return float(self.line2[52:63])
         else:
             return None
+    
+    @property
+    def line1_checksum(self):
+        if self.line1:
+            return self.calc_checksum(self.line1)
+        else:
+            return None
+
+    @property
+    def line2_checksum(self):
+        if self.line2:
+            return self.calc_checksum(self.line2)
+        else:
+            return None
 
     @property
     def json(self):
@@ -258,7 +291,9 @@ class TLEParameters(object):
             'rev_at_epoch':self.rev_at_epoch,
             'epoch_year':self.epoch_year,
             'epoch_day':self.epoch_day,
-            'mean_motion':self.mean_motion
+            'mean_motion':self.mean_motion,
+            'line1_checksum':self.line1_checksum,
+            'line2_checksum':self.line2_checksum
         }
 
         return json.dumps(dict_value)
